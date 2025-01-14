@@ -1,0 +1,16 @@
+---
+services:
+  app:
+    container_name: go-infra-app__server
+    image: go-infra-app:${BUILD_TARGET}
+    # command: tail -f /dev/null
+    hostname: app
+    build:
+      target: ${BUILD_TARGET}
+    env_file: .env
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/app
+    ports:
+      - "${PORT}:${PORT}"

@@ -1,0 +1,34 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/trace"
+)
+
+func main() {
+	exporter, err := otlp.NewExporter(context.TODO(),
+		otlp.WithInsecure(),
+		otlp.WithEndpoint("http://otel-collector:4317"),
+		otlp.WithHTTPClient(otlptracehttp.NewClient()))
+	if err != nil {
+		log.Fatalf("Failed to create exporter: %v", err)
+	}
+	defer exporter.Shutdown(context.Background())
+
+	provider := otel.GetTracerProvider()
+	tracer := provider.Tracer("example")
+
+	trace.RegisterExporter(exporter)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+
+	ctx, span := tracer.Start(context.Background(), "sayHello")
+	defer span.End()
+
+	fmt.Println("Hello, OpenTelemetry!")
+}
