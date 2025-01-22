@@ -1,0 +1,31 @@
+---
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: sh
+
+jobs:
+  docker_build:
+    name: Build Docker image
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # - name: Get the latest commit hash
+      #   id: get_sha
+      #   run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      # - name: Write commit SHA to .revision file
+      #   run: echo "${{ env.COMMIT_SHA }}" > .revision
+
+      - name: Build Docker image
+        run: |-
+          docker build --target production --tag registry.infra.net/go-infra-app:prod .
+
+      - name: Push image to registry
+        run: docker push registry.infra.net/go-infra-app:prod --all-tags

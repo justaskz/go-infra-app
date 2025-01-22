@@ -21,3 +21,6 @@ down:
 
 connect:
 	@ docker compose exec app bash
+
+# release:
+# 	@
