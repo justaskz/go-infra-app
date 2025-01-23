@@ -28,4 +28,4 @@ jobs:
           docker build --target production --tag registry.infra.net/go-infra-app:prod .
 
       - name: Push image to registry
-        run: docker push registry.infra.net/go-infra-app:prod --all-tags
+        run: docker push registry.infra.net/go-infra-app --all-tags

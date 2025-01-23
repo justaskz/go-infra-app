@@ -8,5 +8,6 @@
 
 go.work
 go.work.sum
-out
+
+bin
 tmp
