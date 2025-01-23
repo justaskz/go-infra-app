@@ -28,4 +28,4 @@ RUN go build -o /tmp/server cmd/infra-app/main.go
 FROM scratch AS production
 COPY --from=build /tmp/server .
 
-CMD ["server"]
+CMD ["./server"]
