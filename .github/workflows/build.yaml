@@ -16,16 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Get the latest commit hash
-      #   id: get_sha
-      #   run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-      # - name: Write commit SHA to .revision file
-      #   run: echo "${{ env.COMMIT_SHA }}" > .revision
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
         run: |-
-          docker build --target production --tag registry.infra.net/go-infra-app:prod .
+          docker build --target production --tag registry.infra.net/infra-app:prod .
 
       - name: Push image to registry
-        run: docker push registry.infra.net/go-infra-app --all-tags
+        run: docker push registry.infra.net/infra-app --all-tags
