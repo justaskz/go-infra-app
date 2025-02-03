@@ -16,6 +16,7 @@ func Init() *gin.Engine {
 	r.GET("/", handlers.StatusHandler)
 	r.GET("/health", handlers.HealthHandler)
 	r.GET("/memoryload", handlers.MemoryLoadHandler)
+	r.GET("/echo", handlers.EchoHandler)
 
 	r.GET("/metrics2", gin.WrapH(promhttp.Handler()))
 
