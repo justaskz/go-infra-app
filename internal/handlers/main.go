@@ -43,3 +43,12 @@ func MemoryLoadHandler(c *gin.Context) {
 		"size":   mc.Size(),
 	})
 }
+
+func EchoHandler(c *gin.Context) {
+	message := c.DefaultQuery("message", "no message found")
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "ok",
+		"message": message,
+	})
+}
