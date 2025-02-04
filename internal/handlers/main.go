@@ -16,16 +16,18 @@ func StatusHandler(c *gin.Context) {
 	currentMemLimit := debug.SetMemoryLimit(-1)
 
 	c.JSON(http.StatusOK, gin.H{
-		"port":                  os.Getenv("PORT"),
-		"GOMEMLIMIT":            os.Getenv("GOMEMLIMIT"),
-		"max_procs":             runtime.GOMAXPROCS(0),
-		"current_mem_limit":     float64(currentMemLimit),
-		"current_mem_limit_gb":  float64(currentMemLimit) / (1024 * 1024 * 1024),
-		"heap_system_mem_mb":    float64(m.HeapSys) / 1024 / 1024,
-		"heap_allocated_mem_mb": float64(m.HeapAlloc) / 1024 / 1024,
-		"heap_in_use_mb":        float64(m.HeapInuse) / 1024 / 1024,
-		"heap_released_mem_mb":  float64(m.HeapReleased) / 1024 / 1024,
-		"total_mem_in_use_mb":   float64(m.Sys) / 1024 / 1024,
+		"port":                                os.Getenv("PORT"),
+		"GOMEMLIMIT":                          os.Getenv("GOMEMLIMIT"),
+		"max_procs":                           runtime.GOMAXPROCS(0),
+		"current_mem_limit":                   float64(currentMemLimit),
+		"current_mem_limit_gb":                float64(currentMemLimit) / (1024 * 1024 * 1024),
+		"heap_system_mem_mb":                  float64(m.HeapSys) / 1024 / 1024,
+		"heap_allocated_mem_mb":               float64(m.HeapAlloc) / 1024 / 1024,
+		"heap_in_use_mb":                      float64(m.HeapInuse) / 1024 / 1024,
+		"heap_released_mem_mb":                float64(m.HeapReleased) / 1024 / 1024,
+		"total_mem_in_use_mb":                 float64(m.Sys) / 1024 / 1024,
+		"OTEL_EXPORTER_OTLP_METRICS_ENDPOINT": os.Getenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT"),
+		"OTEL_METRICS_EXPORTER":               os.Getenv("OTEL_METRICS_EXPORTER"),
 	})
 }
 
