@@ -20,7 +20,7 @@ down:
 	@ docker compose down
 
 connect:
-	@ docker compose exec app bash
+	@ docker compose exec goapp bash
 
 # release:
 # 	@

@@ -5,20 +5,23 @@ import (
 	"github.com/justaskz/infra-app/internal/handlers"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 func Init() *gin.Engine {
-	r := gin.Default()
+	router := gin.Default()
 
-	p := ginprometheus.NewPrometheus("gin")
-	p.Use(r)
+	prometheus := ginprometheus.NewPrometheus("gin")
+	prometheus.Use(router)
 
-	r.GET("/", handlers.StatusHandler)
-	r.GET("/health", handlers.HealthHandler)
-	r.GET("/memoryload", handlers.MemoryLoadHandler)
-	r.GET("/echo", handlers.EchoHandler)
+	router.Use(otelgin.Middleware("go-infra-app"))
 
-	r.GET("/metrics2", gin.WrapH(promhttp.Handler()))
+	router.GET("/", handlers.StatusHandler)
+	router.GET("/health", handlers.HealthHandler)
+	router.GET("/memoryload", handlers.MemoryLoadHandler)
+	router.GET("/echo", handlers.EchoHandler)
 
-	return r
+	router.GET("/metrics2", gin.WrapH(promhttp.Handler()))
+
+	return router
 }
