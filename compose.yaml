@@ -1,6 +1,6 @@
 ---
 services:
-  app:
+  goapp:
     container_name: go-infra-app__server
     image: go-infra-app:${BUILD_TARGET}
     # command: tail -f /dev/null
@@ -14,3 +14,8 @@ services:
       - .:/app
     ports:
       - "${PORT}:${PORT}"
+
+networks:
+  default:
+    name: infranet
+    external: true
