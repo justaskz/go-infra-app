@@ -59,9 +59,9 @@ func EchoHandler(c *gin.Context) {
 
 var Meter = otel.Meter("go-infra-app")
 var counter, _ = Meter.Int64Counter(
-	"some.prefix.counter",
+	"infra_app_counter",
 	metric.WithUnit("1"),
-	metric.WithDescription("This is description"),
+	metric.WithDescription("Infra app counter demo"),
 )
 
 func CounterHandler(c *gin.Context) {
