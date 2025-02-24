@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/justaskz/infra-app/internal/memoryload"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/metric"
 )
 
 func StatusHandler(c *gin.Context) {
@@ -52,5 +54,21 @@ func EchoHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "ok",
 		"message": message,
+	})
+}
+
+var Meter = otel.Meter("go-infra-app")
+var counter, _ = Meter.Int64Counter(
+	"some.prefix.counter",
+	metric.WithUnit("1"),
+	metric.WithDescription("This is description"),
+)
+
+func CounterHandler(c *gin.Context) {
+	counter.Add(c.Request.Context(), 1)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "ok",
+		"message": "Counter incremented",
 	})
 }
