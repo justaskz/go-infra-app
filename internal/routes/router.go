@@ -14,8 +14,6 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
 	"go.opentelemetry.io/otel/sdk/metric"
-	"go.opentelemetry.io/otel/sdk/resource"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 )
 
 // func setupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, err error) {
@@ -106,10 +104,11 @@ func initMeterProvider(ctx context.Context) (*metric.MeterProvider, error) {
 	reader := metric.NewPeriodicReader(exporter, interval)
 	readerOptions := metric.WithReader(reader)
 
-	serviceName := semconv.ServiceNameKey.String("go-infra-app")
-	resource := resource.NewWithAttributes(semconv.SchemaURL, serviceName)
-	attributesOptions := metric.WithResource(resource)
-	meterProvider := metric.NewMeterProvider(readerOptions, attributesOptions)
+	// serviceName := semconv.ServiceNameKey.String("go-infra-app")
+	// resource := resource.NewWithAttributes(semconv.SchemaURL, serviceName)
+	// attributesOptions := metric.WithResource(resource)
+	meterProvider := metric.NewMeterProvider(readerOptions)
+	otel.SetMeterProvider(meterProvider)
 
 	return meterProvider, nil
 }
@@ -125,7 +124,6 @@ func Init() *gin.Engine {
 		log.Fatalf("failed to initialize meter provider: %v", err)
 	}
 	defer func() { _ = meterProvider.Shutdown(ctx) }()
-	otel.SetMeterProvider(meterProvider)
 
 	prometheus := ginprometheus.NewPrometheus("gin")
 	prometheus.Use(router)
