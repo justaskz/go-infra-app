@@ -19,9 +19,6 @@ import (
 // func setupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, err error) {
 // 	var shutdownFuncs []func(context.Context) error
 
-// 	// shutdown calls cleanup functions registered via shutdownFuncs.
-// 	// The errors from the calls are joined.
-// 	// Each registered cleanup will be invoked once.
 // 	shutdown = func(ctx context.Context) error {
 // 		var err error
 // 		for _, fn := range shutdownFuncs {
@@ -31,7 +28,6 @@ import (
 // 		return err
 // 	}
 
-// 	// handleErr calls shutdown for cleanup and makes sure that all errors are returned.
 // 	handleErr := func(inErr error) {
 // 		err = errors.Join(inErr, shutdown(ctx))
 // 	}
@@ -67,19 +63,19 @@ import (
 // 	)
 // }
 
-// func newTracerProvider() (*trace.TracerProvider, error) {
-// 	traceExporter, err := stdouttrace.New(
-// 		stdouttrace.WithPrettyPrint())
-// 	if err != nil {
-// 		return nil, err
-// 	}
+// // func newTracerProvider() (*trace.TracerProvider, error) {
+// // 	traceExporter, err := stdouttrace.New(
+// // 		stdouttrace.WithPrettyPrint())
+// // 	if err != nil {
+// // 		return nil, err
+// // 	}
 
-// 	tracerProvider := trace.NewTracerProvider(
-// 		trace.WithBatcher(traceExporter,
-// 			trace.WithBatchTimeout(time.Second)),
-// 	)
-// 	return tracerProvider, nil
-// }
+// // 	tracerProvider := trace.NewTracerProvider(
+// // 		trace.WithBatcher(traceExporter,
+// // 			trace.WithBatchTimeout(time.Second)),
+// // 	)
+// // 	return tracerProvider, nil
+// // }
 
 // func newMeterProvider(ctx context.Context) (*metric.MeterProvider, error) {
 // 	metricExporter, err := otlpmetrichttp.New(ctx)
